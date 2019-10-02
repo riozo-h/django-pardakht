@@ -46,7 +46,7 @@ def get_token(request: HttpRequest, payment):
         'Amount': payment.price * 10,
         'CallBackUrl': callback_url
     }
-    result = send_request('SalePaymentRequest', data)
+    result = send_request('SalePaymentRequest', request_data)
     if result.Status == 0:
         payment.gateway = name
         payment.save()
