@@ -51,8 +51,11 @@ def get_token(request: HttpRequest, payment):
         payment.gateway = name
         payment.save()
         return result
+
     else:
         logger.error("Couldn't get payment token from parsian")
+        logger.error(print(result))
+
         return None
 
 def verify(request, payment):
