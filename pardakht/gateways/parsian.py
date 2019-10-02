@@ -48,7 +48,7 @@ def get_token(request: HttpRequest, payment):
     if result.Status == -127:
         payment.gateway = name
         payment.save()
-        return result.Token
+        return 1234567
 
     else:
         logger.error("Couldn't get payment token from parsian")
