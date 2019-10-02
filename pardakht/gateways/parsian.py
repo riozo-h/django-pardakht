@@ -45,7 +45,7 @@ def get_token(request: HttpRequest, payment):
         'CallBackUrl': callback_url
     }
     result = send_request('SalePaymentRequest', request_data)
-    if result.Status == 0:
+    if result.Status == -127:
         payment.gateway = name
         payment.save()
         return result.Token
