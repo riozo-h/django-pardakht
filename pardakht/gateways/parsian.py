@@ -45,10 +45,12 @@ def get_token(request: HttpRequest, payment):
         'CallBackUrl': callback_url
     }
     result = send_request('SalePaymentRequest', request_data)
-    if result.Status == -127:
+    logger.error(result)
+    logger.error(callback_url)
+    if result.Status == 0:
         payment.gateway = name
         payment.save()
-        return 1234567
+        return result.Token
 
     else:
         logger.error("Couldn't get payment token from parsian")
