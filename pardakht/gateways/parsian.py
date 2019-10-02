@@ -15,16 +15,13 @@ logger = logging.getLogger(__name__)
 
 
 def redirect_url(payment):
-    return "https://pec.shaparak.ir/NewIPG/?token="
+    return "https://pec.shaparak.ir/NewIPG/?token="+payment.token
 
 
 def redirect_data(request: HttpRequest, payment):
     s = str(request.build_absolute_uri(reverse('pardakht:callback_url',
                                                args=[payment.slug, name]))).replace('http://', 'https://')
-    return {
-        'Token': payment.token,
-        'RedirectURL': s
-    }
+    return {}
 
 
 def send_request(method, data):
@@ -35,7 +32,8 @@ def send_request(method, data):
 
 def get_token(request: HttpRequest, payment):
     merchant_id = getattr(settings, str(name+'_merchant_id').upper(), 'none')
-    callback_url = getattr(settings, str(name+'_callback_url').upper(), 'none')
+    callback_url = str(request.build_absolute_uri(reverse('pardakht:callback_url',
+                                                          args=[payment.slug, name]))).replace('http://', 'https://')
     if merchant_id == 'none':
         logger.error('Merchant ID not in settings.\nDefine your merchant id in settings.py as '
                      + str(name+'_merchant_id').upper())
@@ -50,13 +48,14 @@ def get_token(request: HttpRequest, payment):
     if result.Status == 0:
         payment.gateway = name
         payment.save()
-        return result
+        return result.Token
 
     else:
         logger.error("Couldn't get payment token from parsian")
         logger.error(print(result))
 
         return None
+
 
 def verify(request, payment):
     if request.POST.get('Status') != 0:
