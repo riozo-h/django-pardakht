@@ -22,6 +22,7 @@ def redirect_url(payment):
 
 def redirect_data(request: HttpRequest, payment):
     s = str(request.build_absolute_uri(reverse('pardakht:callback_url', args=[payment.slug, name]))).replace('http://', 'https://')
+    logger.error(s)
     return {
         'Token': payment.token,
         'RedirectURL': s
@@ -93,7 +94,3 @@ def verify(request, payment):
         payment.state = payment.STATE_FAILURE
     payment.verification_result = str(verify_result)
     payment.save()
-
-
-
-
