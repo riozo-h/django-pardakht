@@ -1,1 +1,1 @@
-actives = ['zarinpal', 'saman']
+actives = ['zarinpal', 'saman','parsian']
