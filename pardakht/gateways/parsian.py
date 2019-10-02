@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 def redirect_url(payment):
-    return "https://pec.shaparak.ir/NewIPG/?token="+payment.token
+    return "https://pec.shaparak.ir/NewIPG/?token="+str(payment.token)
 
 
 def redirect_data(request: HttpRequest, payment):
