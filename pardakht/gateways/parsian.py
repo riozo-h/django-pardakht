@@ -70,9 +70,9 @@ def verify(request, payment):
         logger.error('Merchant ID not in settings.\nDefine your merchant id in settings.py as ' + str(
             name + '_merchant_id').upper())
         return None
-    if payment.trace_number != request.POST.get('OrderId'):
-        logger.debug('Manipulation')
-        return
+    # if payment.trace_number != request.POST.get('OrderId'):
+    #     logger.debug('Manipulation')
+    #     return
     ref_number = request.POST.get('OrderId')
     if Payment.objects.filter(ref_number=ref_number).exists():
         payment.state = payment.STATE_FAILURE
