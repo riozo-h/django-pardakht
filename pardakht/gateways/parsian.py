@@ -105,4 +105,7 @@ def verify(request, payment):
         payment.verification_result = str(result)
         payment.save()
     else:
+        logger.debug(request.POST.get('RRN'))
+        logger.debug(request.POST.get('RRN') > 0)
+
         return
