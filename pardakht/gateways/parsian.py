@@ -11,7 +11,7 @@ webservice_url = "https://pec.shaparak.ir/NewIPGServices/Sale/SaleService.asmx?w
 
 client = Client(webservice_url)
 
-logger = logging.getLogger("debug")
+logger = logging.getLogger("django")
 
 
 def redirect_url(payment):
@@ -72,7 +72,7 @@ def verify(request, payment):
     if payment.trace_number != request.POST.get('OrderId'):
         logger.warning('Manipulation')
         return
-    logger.debug(request.POST)    
+    logger.debug(request.POST)
     ref_number = request.POST.get('OrderId')
     if Payment.objects.filter(ref_number=ref_number).exists():
         payment.state = payment.STATE_FAILURE
