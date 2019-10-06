@@ -3,7 +3,7 @@ from zeep import Client
 from django.conf import settings
 from django.urls import reverse
 import logging
-# from ..models import Payment
+from ..models import Payment
 
 name = 'parsian'
 display_name = 'پارسیان'
