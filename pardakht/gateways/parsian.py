@@ -87,7 +87,7 @@ def verify(request, payment):
         logger.debug("in verification process")
         verification_data = {
                             'LoginAccount': merchant_id,
-                            'Token': int(request.POST.get('Token')[0])
+                            'Token': request.POST.get('Token')
                             }
         verify_url = "https://pec.shaparak.ir/NewIPGServices/Confirm/ConfirmService.asmx?wsdl"
         verify_client = Client(verify_url)
