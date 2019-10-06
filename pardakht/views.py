@@ -8,7 +8,7 @@ from pardakht import gateways
 from pardakht.decorators import payment_exists, payment_not_started
 from pardakht.models import Payment
 import logging
-
+logger = logging.getLogger(__name__)
 
 @login_required
 def go_login(request):
@@ -59,6 +59,7 @@ def select_gateway(request, slug, gateway):
 @csrf_exempt
 @payment_exists
 def called_back(request, slug, gateway):
+    logger.debug(request.POST)
     payment = Payment.objects.get(slug=slug)
     if payment.verification_done():
         return render(request, 'pardakht/errors/verified_before.html')
@@ -74,7 +75,7 @@ def called_back(request, slug, gateway):
             return_function(payment)
         except Exception as e:
             lg = logging.getLogger(__name__)
-            lg.warning("Something went wrong with given callback function")
-            lg.warning(str(e))
+            lg.debug("Something went wrong with given callback function")
+            lg.debug(str(e))
 
     return render(request, 'pardakht/payment_result.html', {'payment': payment})
