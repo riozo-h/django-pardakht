@@ -65,8 +65,8 @@ def called_back(request, slug, gateway):
         payment.user = request.user
         payment.save()
     gateway_module = importlib.import_module('.'.join([gateways.__name__, gateway]))
-    logger.debug(gateway_module)
     gateway_module.verify(request, payment)
+    logger.debug(gateway_module)
     if payment.callable_module is not None and payment.callable_name is not None:
         user_module = importlib.import_module(payment.callable_module)
         return_function = getattr(user_module, payment.callable_name)
