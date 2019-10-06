@@ -83,7 +83,7 @@ def verify(request, payment):
         payment.ref_number = ref_number
         payment.save()
 
-    if request.POST.get('RRN') > 0:
+    if int(request.POST.get('RRN')) > 0:
         logger.debug("in verification process")
         verification_data = {
                             'LoginAccount': merchant_id,
