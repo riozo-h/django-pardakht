@@ -15,12 +15,13 @@ logger = logging.getLogger(__name__)
 
 
 def redirect_url(payment):
-    return "https://pec.shaparak.ir/NewIPG/?token="+str(payment.token)
+    return "https://pec.shaparak.ir/NewIPG/?token={}".format(payment.token)
 
 
 def redirect_data(request: HttpRequest, payment):
-    s = str(request.build_absolute_uri(reverse('pardakht:callback_url',
-                                               args=[payment.slug, name]))).replace('http://', 'https://')
+    # s = str(request.build_absolute_uri(reverse('pardakht:callback_url',
+    #                                            args=[payment.slug, name]))).replace('http://', 'https://')
+
     return {}
 
 
