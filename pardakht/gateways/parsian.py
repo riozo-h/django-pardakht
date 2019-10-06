@@ -57,7 +57,7 @@ def get_token(request: HttpRequest, payment):
 
 
 def verify(request, payment):
-    logger.debug(request.POST.get("status"))
+    logger.debug(request.POST)
     if request.POST.get('status') != ['0']:
         payment.state = payment.STATE_FAILURE
         payment.payment_result = str(request.POST.get('status'))

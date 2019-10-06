@@ -58,7 +58,6 @@ def select_gateway(request, slug, gateway):
 @csrf_exempt
 @payment_exists
 def called_back(request, slug, gateway):
-    logger.debug(request.POST)
     payment = Payment.objects.get(slug=slug)
     if payment.verification_done():
         return render(request, 'pardakht/errors/verified_before.html')
