@@ -8,7 +8,7 @@ from pardakht import gateways
 from pardakht.decorators import payment_exists, payment_not_started
 from pardakht.models import Payment
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("django")
 
 @login_required
 def go_login(request):
