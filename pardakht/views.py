@@ -17,7 +17,6 @@ def go_login(request):
 @payment_exists
 @payment_not_started
 def start_payment(request, slug):
-    logger.debug("start payment")
     payment = Payment.objects.get(slug=slug)
     payment.state = Payment.STATE_OPENED
     payment.save()
@@ -43,7 +42,6 @@ def select_gateway(request, slug, gateway):
         payment.user = request.user
     elif payment.login_required:
         return go_login(request)
-    logger.debug("getting token")    
     gateway_module = importlib.import_module('.'.join([gateways.__name__, gateway]))
     token = gateway_module.get_token(request, payment)
     if token is None:

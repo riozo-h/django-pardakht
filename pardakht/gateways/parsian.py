@@ -58,7 +58,7 @@ def get_token(request: HttpRequest, payment):
 
 def verify(request, payment):
     logger.debug(request.POST)
-    if request.POST.get('Status') != 0:
+    if request.POST.get('status') != 0 or request.POST.get('Status') != 0:
         payment.state = payment.STATE_FAILURE
         payment.payment_result = str(request.POST.get('Status'))
         payment.save()
@@ -92,6 +92,7 @@ def verify(request, payment):
         verify_client = Client(verify_url)
         verify_method = getattr(verify_client.service, 'ConfirmPayment')
         verify_result = verify_method(verification_data)
+        logger.debug(verification_result)
 
         if verify_result.Status == 0:
             payment.state = payment.STATE_SUCCESS
