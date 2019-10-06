@@ -58,9 +58,9 @@ def get_token(request: HttpRequest, payment):
 
 def verify(request, payment):
     logger.debug(request.POST.get("status"))
-    if int(request.POST.get('status')[0]) != 0:
+    if request.POST.get('status') != ['0']:
         payment.state = payment.STATE_FAILURE
-        payment.payment_result = str(request.POST.get('Status'))
+        payment.payment_result = str(request.POST.get('status'))
         payment.save()
         return
 
@@ -69,11 +69,11 @@ def verify(request, payment):
         logger.error('Merchant ID not in settings.\nDefine your merchant id in settings.py as ' + str(
             name + '_merchant_id').upper())
         return None
-
-    if payment.trace_number != int(request.POST.get('OrderId')[0]):
+    order_id =  request.POST.get('OrderId')[0]
+    if payment.trace_number != int(order_id):
         logger.warning('Manipulation')
         return
-    ref_number = int(request.POST.get('OrderId')[0])
+    ref_number = int(order_id)
     if Payment.objects.filter(ref_number=ref_number).exists():
         payment.state = payment.STATE_FAILURE
         payment.payment_result = 'MANIPULATION'
