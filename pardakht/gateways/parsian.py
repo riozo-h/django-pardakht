@@ -58,7 +58,7 @@ def get_token(request: HttpRequest, payment):
 
 def verify(request, payment):
     logger.debug(request.POST.get("status"))
-    if request.POST.get('status') != 0:
+    if int(request.POST.get('status')[0]) != 0:
         payment.state = payment.STATE_FAILURE
         payment.payment_result = str(request.POST.get('Status'))
         payment.save()
@@ -70,10 +70,10 @@ def verify(request, payment):
             name + '_merchant_id').upper())
         return None
 
-    if payment.trace_number != request.POST.get('OrderId'):
+    if payment.trace_number != int(request.POST.get('OrderId')[0]):
         logger.warning('Manipulation')
         return
-    ref_number = request.POST.get('OrderId')
+    ref_number = int(request.POST.get('OrderId')[0])
     if Payment.objects.filter(ref_number=ref_number).exists():
         payment.state = payment.STATE_FAILURE
         payment.payment_result = 'MANIPULATION'
@@ -83,10 +83,10 @@ def verify(request, payment):
         payment.ref_number = ref_number
         payment.save()
 
-    if int(request.POST.get('RRN')) > 0:
+    if int(request.POST.get('RRN')[0]) > 0:
         verification_data = {
                             'LoginAccount': merchant_id,
-                            'Token': request.POST.get('Token')
+                            'Token': int(request.POST.get('Token')[0])
                             }
         verify_url = "https://pec.shaparak.ir/NewIPGServices/Confirm/ConfirmService.asmx?wsdl"
         verify_client = Client(verify_url)
