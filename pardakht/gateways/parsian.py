@@ -57,8 +57,9 @@ def get_token(request: HttpRequest, payment):
 
 
 def verify(request, payment):
-    logger.debug(request.POST.get('RRN'))
+    logger.debug(request.POST)
     if request.POST.get('status') != 0:
+        logger.debug("status no 0")
         payment.state = payment.STATE_FAILURE
         payment.payment_result = str(request.POST.get('status'))
         payment.save()
@@ -70,7 +71,7 @@ def verify(request, payment):
             name + '_merchant_id').upper())
         return None
     if payment.trace_number != request.POST.get('OrderId'):
-        logger.warning('Manipulation')
+        logger.debug('Manipulation')
         return
     ref_number = request.POST.get('OrderId')
     if Payment.objects.filter(ref_number=ref_number).exists():
@@ -83,6 +84,7 @@ def verify(request, payment):
         payment.save()
 
     if request.POST.get('RRN') > 0:
+        logger.debug("in verification process")
         verification_data = {
                             'LoginAccount': merchant_id,
                             'Token': int(request.POST.get('Token')[0])
