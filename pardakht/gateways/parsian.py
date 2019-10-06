@@ -11,7 +11,7 @@ webservice_url = "https://pec.shaparak.ir/NewIPGServices/Sale/SaleService.asmx?w
 
 client = Client(webservice_url)
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("django")
 
 
 def redirect_url(payment):
