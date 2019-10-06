@@ -93,7 +93,7 @@ def verify(request, payment):
         verify_client = Client(verify_url)
         verify_method = getattr(verify_client.service, 'ConfirmPayment')
         verify_result = verify_method(verification_data)
-        logger.debug(verification_result)
+        logger.debug(verify_result)
 
         if verify_result.Status == 0:
             payment.state = payment.STATE_SUCCESS
