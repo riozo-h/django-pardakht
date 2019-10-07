@@ -21,7 +21,6 @@ def redirect_url(payment):
 def redirect_data(request: HttpRequest, payment):
     # s = str(request.build_absolute_uri(reverse('pardakht:callback_url',
     #                                            args=[payment.slug, name]))).replace('http://', 'https://')
-    a = "q"
     return {}
 
 
@@ -57,7 +56,6 @@ def get_token(request: HttpRequest, payment):
 
 
 def verify(request, payment):
-    logger.debug(request.POST)
     if int(request.POST.get('status')) != 0:
         logger.debug("status no 0")
         payment.state = payment.STATE_FAILURE
@@ -84,7 +82,6 @@ def verify(request, payment):
         payment.save()
 
     if int(request.POST.get('RRN')) > 0:
-        logger.debug("in verification process")
         verification_data = {
                             'LoginAccount': merchant_id,
                             'Token': request.POST.get('Token')
@@ -93,20 +90,15 @@ def verify(request, payment):
         verify_client = Client(verify_url)
         verify_method = getattr(verify_client.service, 'ConfirmPayment')
         verify_result = verify_method(verification_data)
-        logger.debug(verify_result)
 
         if verify_result.Status == 0:
-            logger.debug("Payment Success")
             payment.state = payment.STATE_SUCCESS
             result = "Successful Verified"
         else:
-            logger.debug("Payment Failure")
             payment.state = payment.STATE_FAILURE
             result = "Payment Failure"
 
         payment.verification_result = str(result)
         payment.save()
     else:
-        logger.debug(request.POST.get('RRN'))
-        logger.debug(request.POST.get('RRN') > 0)
         return
