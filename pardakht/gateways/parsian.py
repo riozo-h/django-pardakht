@@ -96,9 +96,11 @@ def verify(request, payment):
         logger.debug(verify_result)
 
         if verify_result.Status == 0:
+            logger.debug("Payment Success")
             payment.state = payment.STATE_SUCCESS
             result = "Successful Verified"
         else:
+            logger.debug("Payment Failure")
             payment.state = payment.STATE_FAILURE
             result = "Payment Failure"
 
@@ -107,5 +109,4 @@ def verify(request, payment):
     else:
         logger.debug(request.POST.get('RRN'))
         logger.debug(request.POST.get('RRN') > 0)
-
         return
